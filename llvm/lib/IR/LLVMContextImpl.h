@@ -911,6 +911,8 @@ template <> struct MDNodeKeyImpl<DISubprogram> {
   Metadata *Annotations;
   MDString *TargetFuncName;
   bool UsesKeyInstructions;
+  Metadata *PropertyGetter; 
+  Metadata *PropertySetter;
 
   MDNodeKeyImpl(Metadata *Scope, MDString *Name, MDString *LinkageName,
                 Metadata *File, unsigned Line, Metadata *Type,
@@ -919,7 +921,8 @@ template <> struct MDNodeKeyImpl<DISubprogram> {
                 unsigned SPFlags, Metadata *Unit, Metadata *TemplateParams,
                 Metadata *Declaration, Metadata *RetainedNodes,
                 Metadata *ThrownTypes, Metadata *Annotations,
-                MDString *TargetFuncName, bool UsesKeyInstructions)
+                MDString *TargetFuncName, bool UsesKeyInstructions,
+                Metadata *PropertyGetter, Metadata *PropertySetter)
       : Scope(Scope), Name(Name), LinkageName(LinkageName), File(File),
         Line(Line), ScopeLine(ScopeLine), Type(Type),
         ContainingType(ContainingType), VirtualIndex(VirtualIndex),
@@ -927,7 +930,8 @@ template <> struct MDNodeKeyImpl<DISubprogram> {
         Unit(Unit), TemplateParams(TemplateParams), Declaration(Declaration),
         RetainedNodes(RetainedNodes), ThrownTypes(ThrownTypes),
         Annotations(Annotations), TargetFuncName(TargetFuncName),
-        UsesKeyInstructions(UsesKeyInstructions) {}
+        UsesKeyInstructions(UsesKeyInstructions),
+        PropertyGetter(PropertyGetter), PropertySetter(PropertySetter) {}
   MDNodeKeyImpl(const DISubprogram *N)
       : Scope(N->getRawScope()), Name(N->getRawName()),
         LinkageName(N->getRawLinkageName()), File(N->getRawFile()),
@@ -942,7 +946,9 @@ template <> struct MDNodeKeyImpl<DISubprogram> {
         ThrownTypes(N->getRawThrownTypes()),
         Annotations(N->getRawAnnotations()),
         TargetFuncName(N->getRawTargetFuncName()),
-        UsesKeyInstructions(N->getKeyInstructionsEnabled()) {}
+        UsesKeyInstructions(N->getKeyInstructionsEnabled()),
+        PropertyGetter(N->getRawPropertyGetter()),
+        PropertySetter(N->getRawPropertySetter()) {}
 
   bool isKeyOf(const DISubprogram *RHS) const {
     return Scope == RHS->getRawScope() && Name == RHS->getRawName() &&
@@ -960,7 +966,9 @@ template <> struct MDNodeKeyImpl<DISubprogram> {
            ThrownTypes == RHS->getRawThrownTypes() &&
            Annotations == RHS->getRawAnnotations() &&
            TargetFuncName == RHS->getRawTargetFuncName() &&
-           UsesKeyInstructions == RHS->getKeyInstructionsEnabled();
+           UsesKeyInstructions == RHS->getKeyInstructionsEnabled() && 
+           PropertyGetter == RHS->getRawPropertyGetter() && 
+           PropertySetter == RHS->getRawPropertySetter();
   }
 
   bool isDefinition() const { return SPFlags & DISubprogram::SPFlagDefinition; }

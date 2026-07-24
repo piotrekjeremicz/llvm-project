@@ -2360,7 +2360,8 @@ private:
           Metadata *TemplateParams, Metadata *Declaration,
           Metadata *RetainedNodes, Metadata *ThrownTypes, Metadata *Annotations,
           MDString *TargetFuncName, bool UsesKeyInstructions,
-          StorageType Storage, bool ShouldCreate = true);
+          StorageType Storage, bool ShouldCreate = true, 
+          Metadata *PropertyGetter = nullptr, Metadata *PropertySetter = nullptr);
 
   TempDISubprogram cloneImpl() const {
     return getTemporary(getContext(), getScope(), getName(), getLinkageName(),
@@ -2369,7 +2370,8 @@ private:
                         getThisAdjustment(), getFlags(), getSPFlags(),
                         getUnit(), getTemplateParams(), getDeclaration(),
                         getRetainedNodes(), getThrownTypes(), getAnnotations(),
-                        getTargetFuncName(), getKeyInstructionsEnabled());
+                        getTargetFuncName(), getKeyInstructionsEnabled(),
+                        getPropertyGetter(), getPropertySetter());
   }
 
 public:
@@ -2382,7 +2384,8 @@ public:
        DITemplateParameterArray TemplateParams = nullptr,
        DISubprogram *Declaration = nullptr, MDNodeArray RetainedNodes = nullptr,
        DITypeArray ThrownTypes = nullptr, DINodeArray Annotations = nullptr,
-       StringRef TargetFuncName = "", bool UsesKeyInstructions = false),
+       StringRef TargetFuncName = "", bool UsesKeyInstructions = false,
+       DISubprogram *PropertyGetter = nullptr, DISubprogram *PropertySetter = nullptr),
       (Scope, Name, LinkageName, File, Line, Type, ScopeLine, ContainingType,
        VirtualIndex, ThisAdjustment, Flags, SPFlags, Unit, TemplateParams,
        Declaration, RetainedNodes, ThrownTypes, Annotations, TargetFuncName,
@@ -2397,7 +2400,8 @@ public:
        Metadata *TemplateParams = nullptr, Metadata *Declaration = nullptr,
        Metadata *RetainedNodes = nullptr, Metadata *ThrownTypes = nullptr,
        Metadata *Annotations = nullptr, MDString *TargetFuncName = nullptr,
-       bool UsesKeyInstructions = false),
+       bool UsesKeyInstructions = false,
+       DISubprogram *PropertyGetter = nullptr, DISubprogram *PropertySetter = nullptr),
       (Scope, Name, LinkageName, File, Line, Type, ScopeLine, ContainingType,
        VirtualIndex, ThisAdjustment, Flags, SPFlags, Unit, TemplateParams,
        Declaration, RetainedNodes, ThrownTypes, Annotations, TargetFuncName,
@@ -2544,6 +2548,18 @@ public:
   }
   MDString *getRawTargetFuncName() const {
     return getNumOperands() > 12 ? getOperandAs<MDString>(12) : nullptr;
+  }
+  DISubprogram *getPropertyGetter() const {
+    return cast_or_null<DISubprogram>(getRawPropertyGetter());
+  }
+  DISubprogram *getPropertySetter() const {
+    return cast_or_null<DISubprogram>(getRawPropertySetter());
+  }
+  Metadata *getRawPropertyGetter() const {
+    return getNumOperands() > 13 ? getOperandAs<Metadata>(13) : nullptr;
+  }
+  Metadata *getRawPropertySetter() const {
+    return getNumOperands() > 14 ? getOperandAs<Metadata>(14) : nullptr;
   }
 
   void replaceRawLinkageName(MDString *LinkageName) {

@@ -1409,7 +1409,8 @@ DISubprogram *DISubprogram::getImpl(
     int ThisAdjustment, DIFlags Flags, DISPFlags SPFlags, Metadata *Unit,
     Metadata *TemplateParams, Metadata *Declaration, Metadata *RetainedNodes,
     Metadata *ThrownTypes, Metadata *Annotations, MDString *TargetFuncName,
-    bool UsesKeyInstructions, StorageType Storage, bool ShouldCreate) {
+    bool UsesKeyInstructions, StorageType Storage, bool ShouldCreate,
+    Metadata *PropertyGetter, Metadata *PropertySetter) {
   assert(isCanonical(Name) && "Expected canonical MDString");
   assert(isCanonical(LinkageName) && "Expected canonical MDString");
   assert(isCanonical(TargetFuncName) && "Expected canonical MDString");
@@ -1418,26 +1419,33 @@ DISubprogram *DISubprogram::getImpl(
                          ContainingType, VirtualIndex, ThisAdjustment, Flags,
                          SPFlags, Unit, TemplateParams, Declaration,
                          RetainedNodes, ThrownTypes, Annotations,
-                         TargetFuncName, UsesKeyInstructions));
-  SmallVector<Metadata *, 13> Ops = {
-      File,           Scope,          Name,        LinkageName,
-      Type,           Unit,           Declaration, RetainedNodes,
-      ContainingType, TemplateParams, ThrownTypes, Annotations,
-      TargetFuncName};
-  if (!TargetFuncName) {
+                         TargetFuncName, UsesKeyInstructions,
+                        PropertyGetter, PropertySetter));
+  SmallVector<Metadata *, 15> Ops = {
+    File,           Scope,          Name,        LinkageName,
+    Type,           Unit,           Declaration, RetainedNodes,
+    ContainingType, TemplateParams, ThrownTypes, Annotations,
+    TargetFuncName, PropertyGetter, PropertySetter};
+if (!PropertySetter) {
+  Ops.pop_back();
+  if (!PropertyGetter) {
     Ops.pop_back();
-    if (!Annotations) {
+    if (!TargetFuncName) {
       Ops.pop_back();
-      if (!ThrownTypes) {
+      if (!Annotations) {
         Ops.pop_back();
-        if (!TemplateParams) {
+        if (!ThrownTypes) {
           Ops.pop_back();
-          if (!ContainingType)
+          if (!TemplateParams) {
             Ops.pop_back();
+            if (!ContainingType)
+              Ops.pop_back();
+          }
         }
       }
     }
   }
+}
   DEFINE_GETIMPL_STORE_N(DISubprogram,
                          (Line, ScopeLine, VirtualIndex, ThisAdjustment, Flags,
                           SPFlags, UsesKeyInstructions),
