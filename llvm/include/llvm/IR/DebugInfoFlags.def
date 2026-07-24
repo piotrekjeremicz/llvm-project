@@ -91,6 +91,7 @@ HANDLE_DISP_FLAG((1u << 8), MainSubprogram)
 // May also utilize this Flag in future, when adding support
 // for defaulted functions
 HANDLE_DISP_FLAG((1u << 9), Deleted)
+HANDLE_DISP_FLAG((1u << 10), Property)
 HANDLE_DISP_FLAG((1u << 11), ObjCDirect)
 
 #ifdef DISP_FLAG_LARGEST_NEEDED

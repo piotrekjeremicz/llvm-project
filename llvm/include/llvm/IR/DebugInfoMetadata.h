@@ -2430,6 +2430,7 @@ public:
   bool isDefinition() const { return getSPFlags() & SPFlagDefinition; }
   bool isOptimized() const { return getSPFlags() & SPFlagOptimized; }
   bool isMainSubprogram() const { return getSPFlags() & SPFlagMainSubprogram; }
+  bool isProperty() const { return getSPFlags() & SPFlagProperty; }
 
   bool isArtificial() const { return getFlags() & FlagArtificial; }
   bool isPrivate() const {
