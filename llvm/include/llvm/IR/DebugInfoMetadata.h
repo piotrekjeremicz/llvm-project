@@ -2401,7 +2401,7 @@ public:
        Metadata *RetainedNodes = nullptr, Metadata *ThrownTypes = nullptr,
        Metadata *Annotations = nullptr, MDString *TargetFuncName = nullptr,
        bool UsesKeyInstructions = false,
-       DISubprogram *PropertyGetter = nullptr, DISubprogram *PropertySetter = nullptr),
+       Metadata *PropertyGetter = nullptr, Metadata *PropertySetter = nullptr),
       (Scope, Name, LinkageName, File, Line, Type, ScopeLine, ContainingType,
        VirtualIndex, ThisAdjustment, Flags, SPFlags, Unit, TemplateParams,
        Declaration, RetainedNodes, ThrownTypes, Annotations, TargetFuncName,

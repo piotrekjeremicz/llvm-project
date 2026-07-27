@@ -2476,6 +2476,8 @@ static void writeDISubprogram(raw_ostream &Out, const DISubprogram *N,
   Printer.printMetadata("annotations", N->getRawAnnotations());
   Printer.printString("targetFuncName", N->getTargetFuncName());
   Printer.printBool("keyInstructions", N->getKeyInstructionsEnabled(), false);
+  Printer.printMetadata("propertyGetter", N->getRawPropertyGetter());
+  Printer.printMetadata("propertySetter", N->getRawPropertySetter());
   Out << ")";
 }
 
