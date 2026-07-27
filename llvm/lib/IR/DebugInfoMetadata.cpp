@@ -1409,8 +1409,8 @@ DISubprogram *DISubprogram::getImpl(
     int ThisAdjustment, DIFlags Flags, DISPFlags SPFlags, Metadata *Unit,
     Metadata *TemplateParams, Metadata *Declaration, Metadata *RetainedNodes,
     Metadata *ThrownTypes, Metadata *Annotations, MDString *TargetFuncName,
-    bool UsesKeyInstructions, StorageType Storage, bool ShouldCreate,
-    Metadata *PropertyGetter, Metadata *PropertySetter) {
+    bool UsesKeyInstructions, Metadata *PropertyGetter,
+    Metadata *PropertySetter, StorageType Storage, bool ShouldCreate) {
   assert(isCanonical(Name) && "Expected canonical MDString");
   assert(isCanonical(LinkageName) && "Expected canonical MDString");
   assert(isCanonical(TargetFuncName) && "Expected canonical MDString");

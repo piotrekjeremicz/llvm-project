@@ -1979,7 +1979,7 @@ Error MetadataLoader::MetadataLoaderImpl::parseOneMetadata(
     break;
   }
   case bitc::METADATA_SUBPROGRAM: {
-    if (Record.size() < 18 || Record.size() > 22)
+    if (Record.size() < 18 || Record.size() > 24)
       return error("Invalid record");
 
     bool HasSPFlags = Record[0] & 4;
@@ -2029,6 +2029,8 @@ Error MetadataLoader::MetadataLoaderImpl::parseOneMetadata(
     bool HasThrownTypes = true;
     bool HasAnnotations = false;
     bool HasTargetFuncName = false;
+    bool HasPropertyGetter = false;
+    bool HasPropertySetter = false;
     unsigned OffsetA = 0;
     unsigned OffsetB = 0;
     // Key instructions won't be enabled in old-format bitcode, so only
@@ -2047,6 +2049,8 @@ Error MetadataLoader::MetadataLoaderImpl::parseOneMetadata(
       HasAnnotations = Record.size() >= 19;
       HasTargetFuncName = Record.size() >= 20;
       UsesKeyInstructions = Record.size() >= 21 ? Record[20] : 0;
+      HasPropertyGetter = Record.size() >= 22;
+      HasPropertySetter = Record.size() >= 23;
     }
 
     Metadata *CUorFn = getMDOrNull(Record[12 + OffsetB]);
@@ -2075,7 +2079,9 @@ Error MetadataLoader::MetadataLoaderImpl::parseOneMetadata(
                         : nullptr, // annotations
          HasTargetFuncName ? getMDString(Record[19 + OffsetB])
                            : nullptr, // targetFuncName
-         UsesKeyInstructions));
+         UsesKeyInstructions,
+         HasPropertyGetter ? getMDOrNull(Record[21]) : nullptr,   // propertyGetter
+         HasPropertySetter ? getMDOrNull(Record[22]) : nullptr)); // propertySetter
     MetadataList.assignValue(SP, NextMetadataNo);
     NextMetadataNo++;
 

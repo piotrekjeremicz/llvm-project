@@ -2341,15 +2341,17 @@ private:
           DITemplateParameterArray TemplateParams, DISubprogram *Declaration,
           MDNodeArray RetainedNodes, DITypeArray ThrownTypes,
           DINodeArray Annotations, StringRef TargetFuncName,
-          bool UsesKeyInstructions, StorageType Storage,
+          bool UsesKeyInstructions, DISubprogram *PropertyGetter,
+          DISubprogram *PropertySetter, StorageType Storage,
           bool ShouldCreate = true) {
     return getImpl(Context, Scope, getCanonicalMDString(Context, Name),
-                   getCanonicalMDString(Context, LinkageName), File, Line, Type,
-                   ScopeLine, ContainingType, VirtualIndex, ThisAdjustment,
-                   Flags, SPFlags, Unit, TemplateParams.get(), Declaration,
-                   RetainedNodes.get(), ThrownTypes.get(), Annotations.get(),
-                   getCanonicalMDString(Context, TargetFuncName),
-                   UsesKeyInstructions, Storage, ShouldCreate);
+                  getCanonicalMDString(Context, LinkageName), File, Line, Type,
+                  ScopeLine, ContainingType, VirtualIndex, ThisAdjustment,
+                  Flags, SPFlags, Unit, TemplateParams.get(), Declaration,
+                  RetainedNodes.get(), ThrownTypes.get(), Annotations.get(),
+                  getCanonicalMDString(Context, TargetFuncName),
+                  UsesKeyInstructions, PropertyGetter, PropertySetter,
+                  Storage, ShouldCreate);
   }
 
   LLVM_ABI static DISubprogram *
@@ -2360,8 +2362,8 @@ private:
           Metadata *TemplateParams, Metadata *Declaration,
           Metadata *RetainedNodes, Metadata *ThrownTypes, Metadata *Annotations,
           MDString *TargetFuncName, bool UsesKeyInstructions,
-          StorageType Storage, bool ShouldCreate = true, 
-          Metadata *PropertyGetter = nullptr, Metadata *PropertySetter = nullptr);
+          Metadata *PropertyGetter, Metadata *PropertySetter,
+          StorageType Storage, bool ShouldCreate = true);
 
   TempDISubprogram cloneImpl() const {
     return getTemporary(getContext(), getScope(), getName(), getLinkageName(),
@@ -2389,7 +2391,7 @@ public:
       (Scope, Name, LinkageName, File, Line, Type, ScopeLine, ContainingType,
        VirtualIndex, ThisAdjustment, Flags, SPFlags, Unit, TemplateParams,
        Declaration, RetainedNodes, ThrownTypes, Annotations, TargetFuncName,
-       UsesKeyInstructions))
+       UsesKeyInstructions, PropertyGetter, PropertySetter))
 
   DEFINE_MDNODE_GET(
       DISubprogram,
@@ -2405,7 +2407,7 @@ public:
       (Scope, Name, LinkageName, File, Line, Type, ScopeLine, ContainingType,
        VirtualIndex, ThisAdjustment, Flags, SPFlags, Unit, TemplateParams,
        Declaration, RetainedNodes, ThrownTypes, Annotations, TargetFuncName,
-       UsesKeyInstructions))
+       UsesKeyInstructions, PropertyGetter, PropertySetter))
 
   TempDISubprogram clone() const { return cloneImpl(); }
 

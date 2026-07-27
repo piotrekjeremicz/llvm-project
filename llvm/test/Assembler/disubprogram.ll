@@ -87,14 +87,13 @@ define void @_Z3foov() !dbg !9 {
 ; CHECK: !DISubprogram({{.*}}subroutine3{{.*}}, spFlags: DISPFlagDefinition | DISPFlagRecursive,
 ; CHECK: !DISubprogram({{.*}}subroutine4{{.*}}, spFlags: DISPFlagDefinition | DISPFlagPure | DISPFlagElemental | DISPFlagRecursive,
 
-!17 = distinct !DISubprogram(name: "subroutine1", scope: !1, file: !2, line: 1, type: !18, scopeLine: 2, spFlags: DISPFlagDefinition | DISPFlagPure, unit: !8, retainedNodes: !6)
-!18 = !DISubroutineType(types: !0)
-!19 = distinct !DISubprogram(name: "subroutine2", scope: !1, file: !2, line: 5, type: !18, scopeLine: 6, spFlags: DISPFlagDefinition | DISPFlagElemental, unit: !8, retainedNodes: !6)
-!20 = distinct !DISubprogram(name: "subroutine3", scope: !1, file: !2, line: 9, type: !18, scopeLine: 10, spFlags: DISPFlagDefinition | DISPFlagRecursive, unit: !8, retainedNodes: !6)
-!21 = distinct !DISubprogram(name: "subroutine4", scope: !1, file: !2, line: 13, type: !18, scopeLine: 14, spFlags: DISPFlagDefinition | DISPFlagPure | DISPFlagElemental | DISPFlagRecursive, unit: !8, retainedNodes: !6)
+!17 = distinct !DISubprogram(name: "subroutine1", scope: !1, file: !2, line: 1, type: !3, scopeLine: 2, spFlags: DISPFlagDefinition | DISPFlagPure, unit: !8, retainedNodes: !6)
+!19 = distinct !DISubprogram(name: "subroutine2", scope: !1, file: !2, line: 5, type: !3, scopeLine: 6, spFlags: DISPFlagDefinition | DISPFlagElemental, unit: !8, retainedNodes: !6)
+!20 = distinct !DISubprogram(name: "subroutine3", scope: !1, file: !2, line: 9, type: !3, scopeLine: 10, spFlags: DISPFlagDefinition | DISPFlagRecursive, unit: !8, retainedNodes: !6)
+!21 = distinct !DISubprogram(name: "subroutine4", scope: !1, file: !2, line: 13, type: !3, scopeLine: 14, spFlags: DISPFlagDefinition | DISPFlagPure | DISPFlagElemental | DISPFlagRecursive, unit: !8, retainedNodes: !6)
 
 ; CHECK: !DISubprogram({{.*}}SimpleFunc{{.*}}, flags: DIFlagPrototyped | DIFlagNameIsSimplified,
-; CHECK: !DISubprogram({{.*}}subroutine5{{.*}}, spFlags: DISPFlagDefinition | DISPFlagProperty,
+; CHECK: !DISubprogram({{.*}}subroutine5{{.*}}, spFlags: DISPFlagDefinition | DISPFlagProperty, {{.*}}propertyGetter: !16, propertySetter: !17)
 
 !22 = distinct !DISubprogram(name: "SimpleFunc", linkageName: "_Z10SimpleFuncIiEvv", scope: !1, file: !2, type: !3, flags: DIFlagPrototyped | DIFlagNameIsSimplified, spFlags: DISPFlagDefinition, unit: !8, templateParams: !5)
-!23 = distinct !DISubprogram(name: "subroutine5", scope: !1, file: !2, line: 17, type: !18, scopeLine: 18, spFlags: DISPFlagDefinition | DISPFlagProperty, unit: !8, retainedNodes: !6)
+!23 = distinct !DISubprogram(name: "subroutine5", scope: !1, file: !2, line: 17, type: !3, scopeLine: 18, spFlags: DISPFlagDefinition | DISPFlagProperty, unit: !8, retainedNodes: !6, propertyGetter: !17, propertySetter: !19)
