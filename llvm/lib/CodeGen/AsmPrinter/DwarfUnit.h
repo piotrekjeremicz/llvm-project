@@ -267,6 +267,8 @@ public:
   void applySubprogramAttributes(const DISubprogram *SP, DIE &SPDie,
                                  bool SkipSPAttributes = false);
 
+  void constructPropertyDIE(DIE &SPDie, const DISubprogram *SP);
+
   /// Creates type DIE with specific context.
   DIE *createTypeDIE(const DIScope *Context, DIE &ContextDIE, const DIType *Ty);
 

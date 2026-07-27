@@ -1566,6 +1566,8 @@ void DwarfUnit::applySubprogramAttributes(const DISubprogram *SP, DIE &SPDie,
 
   if (SP->isMainSubprogram())
     addFlag(SPDie, dwarf::DW_AT_main_subprogram);
+  if (SP->isProperty())
+    constructPropertyDIE(SPDie, SP);
   if (SP->isPure())
     addFlag(SPDie, dwarf::DW_AT_pure);
   if (SP->isElemental())
@@ -1578,6 +1580,23 @@ void DwarfUnit::applySubprogramAttributes(const DISubprogram *SP, DIE &SPDie,
 
   if (DD->getDwarfVersion() >= 5 && SP->isDeleted())
     addFlag(SPDie, dwarf::DW_AT_deleted);
+}
+
+void DwarfUnit::constructPropertyDIE(DIE &SPDie, const DISubprogram *SP) {
+  DIE &PropertyDie = createAndAddDIE(dwarf::DW_TAG_property, SPDie);
+  addString(PropertyDie, dwarf::DW_AT_name, SP->getName());
+
+  if (auto *Getter = SP->getPropertyGetter()) {
+    DIE *GetterTarget = getOrCreateSubprogramDIE(Getter, nullptr);
+    DIE &GetterDie = createAndAddDIE(dwarf::DW_TAG_property_getter, PropertyDie);
+    addDIEEntry(GetterDie, dwarf::DW_AT_property_forward, *GetterTarget);
+  }
+
+  if (auto *Setter = SP->getPropertySetter()) {
+    DIE *SetterTarget = getOrCreateSubprogramDIE(Setter, nullptr);
+    DIE &SetterDie = createAndAddDIE(dwarf::DW_TAG_property_setter, PropertyDie);
+    addDIEEntry(SetterDie, dwarf::DW_AT_property_forward, *SetterTarget);
+  }
 }
 
 void DwarfUnit::constructSubrangeDIE(DIE &DW_Subrange, const DISubrangeType *SR,
